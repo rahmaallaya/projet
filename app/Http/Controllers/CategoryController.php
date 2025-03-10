@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class CategoryController extends Controller
 {
     // Show create form
+    //n7ib nour9ed
     public function create()
     {
         return view('category.create');
