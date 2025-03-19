@@ -64,12 +64,6 @@
         color: #3498db;
     }
     
-<<<<<<< Updated upstream
-/*doraaa*/
-    /* Agrandir le navbar */
-=======
-
->>>>>>> Stashed changes
     .navbar-nav .nav-link {
         font-size: 1.2rem; 
     }
