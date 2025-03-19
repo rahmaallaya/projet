@@ -65,7 +65,7 @@
         color: #3498db;
     }
     
-
+/*doraaa*/
     /* Agrandir le navbar */
     .navbar-nav .nav-link {
         font-size: 1.2rem; /* Augmente la taille de la police des liens */
