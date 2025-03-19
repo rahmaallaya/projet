@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         /* Navbar Styles */
         .navbar {
@@ -71,7 +73,7 @@
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="#about">About</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -89,17 +91,47 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Request List</a>
                     </li>
+                    @if(auth()->check() && auth()->user()->is_super_admin)
                     <li class="nav-item">
                         <a class="nav-link" href="#">User Approvals</a>
                     </li>
+                  
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Information Requests</a>
+                    </li>
+                    @endif
+
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     @auth
-                        <li class="nav-item">
-                            <form action="/" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-link nav-link">Logout</button>
-                            </form>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-2"></i>
+                                name
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <span class="dropdown-item-text small">
+                                        Logged in as<br>
+                                        <strong>email</strong>
+                                    </span>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bi bi-pencil-square me-2"></i>Edit Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <form method="POST" action="#">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     @else
                         <li class="nav-item">
@@ -118,10 +150,34 @@
         @yield('content')
     </main>
 
-    <footer class="bg-light text-center text-lg-start mt-5">
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1);">
-            © {{ date('Y') }} My Application :
-            <a class="text-dark" href="/">example.com</a>
+    <footer class="bg-dark text-light mt-5">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>About My Application</h5>
+                    <p>My Application is your gateway to seamless service connections. We offer a wide range of services to meet your needs.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light">Home</a></li>
+                        <li><a href="#about" class="text-light">About</a></li>
+                        <li><a href="#services" class="text-light">Services</a></li>
+                        <li><a href="#" class="text-light">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li>Email: info@myapplication.com</li>
+                        <li>Phone: +123 456 7890</li>
+                        <li>Address: 123 Service Street, Service City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p>&copy; {{ date('Y') }} My Application. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
