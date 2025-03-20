@@ -1,31 +1,31 @@
 @extends('layouts.app')
+
 @section('title', 'Contact')
+
 @section('content')
 <div class="contact-page">
-    <div class="container">
+    <div class="container mt-4">
         <h1 class="text-center mb-5">Contact Us</h1>
-
         <div class="row">
-         
             <div class="col-md-4">
                 <div class="contact-card">
                     <h3>Get In Touch</h3>
                     <p>
-                        We're here to answer your questions and support you in finding or providing services. 
-                        Whether you need assistance with booking, technical support, or general inquiries, 
+                        We're here to answer your questions and support you in your learning journey. 
+                        Whether you need information about our courses, technical assistance, or personalized advice, 
                         our team is ready to help.
                     </p>
                     <div class="mb-4">
                         <h5>Address</h5>
-                        <p><i class="fas fa-map-marker-alt me-2"></i>123 Service Lane, Tech City, TX 75001, USA</p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i>123 Liberty Street, Tunis, Tunisia</p>
                     </div>
                     <div class="mb-4">
                         <h5>Phone</h5>
-                        <p><i class="fas fa-phone-alt me-2"></i>+1 (123) 456-7890</p>
+                        <p><i class="fas fa-phone-alt me-2"></i>+216 12 345 678</p>
                     </div>
                     <div class="mb-4">
                         <h5>Email</h5>
-                        <p><i class="fas fa-envelope me-2"></i>support@platformname.com</p>
+                        <p><i class="fas fa-envelope me-2"></i>contact@elearning-tn.com</p>
                     </div>
                     <div class="mb-4">
                         <h5>Working Hours</h5>
@@ -37,7 +37,7 @@
                 <div class="contact-card">
                     <h3>Our Location</h3>
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3348.123456789012!2d-96.7890123456789!3d32.98765432109876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c123456789abc%3A0x1234567890abcdef!2sTech%20City%2C%20TX%2C%20USA!5e0!3m2!1sen!2sus!4v1697212345678"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12790.34729979802!2d10.165530968083982!3d36.80687479999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e2cb7454c6ed51%3A0x683b7ab5a84b1e1f!2sTunis%2C%20Tunisie!5e0!3m2!1sfr!2stn!4v1697212345678"
                         width="100%"
                         height="300"
                         style="border:0;"

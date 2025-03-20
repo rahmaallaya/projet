@@ -2,7 +2,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ContactController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,3 +28,6 @@ Route::post('/category', [CategoryController::class, 'store'])->name('category.s
 Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+Route::get('/contact', [ContactController::class, 'create'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/requests',[ContactController::class, 'index'])->name('requests.index');

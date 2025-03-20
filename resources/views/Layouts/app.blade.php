@@ -58,6 +58,74 @@
            
         }
 
+        .contact-card {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 100%; /* Tous les rectangles ont la même hauteur */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .contact-card h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #3498db;
+    }
+
+    .contact-card p {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .contact-card a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .contact-card a:hover {
+        text-decoration: underline;
+    }
+
+    .contact-card iframe {
+        width: 100%;
+        height: 300px; /* Hauteur fixe pour la carte */
+        border: 0;
+        border-radius: 8px;
+    }
+
+    .contact-card form label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .contact-card form input,
+    .contact-card form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .contact-card form button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .contact-card form button:hover {
+        background-color: #2980b9;
+    }
     </style>
 </head>
 <body>
@@ -86,12 +154,12 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="/contact">Contact</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Request List</a>
                     </li>
-                    @if(auth()->check() && auth()->user()->is_super_admin)
+                  
                     <li class="nav-item">
                         <a class="nav-link" href="#">User Approvals</a>
                     </li>
@@ -99,7 +167,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Information Requests</a>
                     </li>
-                    @endif
+                  
 
                 </ul>
                 <ul class="navbar-nav ms-auto">
