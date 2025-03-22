@@ -3,7 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Mail; // Add this import
+use App\Mail\ContactResponse;
 class ContactController extends Controller
 {
     // Afficher la page de contact
@@ -25,16 +26,58 @@ class ContactController extends Controller
 
         return redirect()->back()
             ->with('success', 'Your message has been sent successfully!');
-    }
+    } 
 
     // Liste des demandes (admin)
     public function index()
     {
-        if(auth()->user()->role !== 'super_admin') {
+        if  (session('type') !== 'super_admin') {
             abort(403);
         }
 
         $requests = ContactRequest::latest()->paginate(10);
-        return view('admin.contact-requests', compact('requests'));
+        return view('contact-requests.index', compact('requests'));
+    }
+  
+public function response(Request $request, $id)
+{
+    if (session('type') !== 'super_admin') {
+        abort(403);
+    }
+
+    $contactRequest = ContactRequest::findOrFail($id);
+    $validated = $request->validate([
+        'message' => 'required|string|min:10',
+    ]);
+
+    // Send the email
+    Mail::to($contactRequest->email)->send(new ContactResponse($validated['message']));
+
+    return redirect()->route('contact-requests.index')
+        ->with('success', 'Response sent to ' . $contactRequest->email);
+}
+
+    // Delete a contact request
+    public function destroy($id)
+    {
+        if (session('type') !== 'super_admin') {
+            abort(403);
+        }
+
+        $contactRequest = ContactRequest::findOrFail($id);
+        $contactRequest->delete();
+
+        return redirect()->route('contact-requests.index')
+            ->with('success', 'Request deleted successfully.');
+    }
+
+    public function show($id)
+    {
+        if (session('type') !== 'super_admin') {
+            abort(403);
+        }
+
+        $request = ContactRequest::findOrFail($id);
+        return view('contact-requests.show', compact('request'));
     }
 }

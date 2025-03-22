@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_categorie')->nullable();
             $table->enum('isConfirmed', ['active', 'desactive'])->default('desactive');
             $table->timestamps();
+            $table->string('image')->nullable();
+            $table->text('description');
             $table->foreign('id_categorie')->references('id')->on('categories');
         });
     }

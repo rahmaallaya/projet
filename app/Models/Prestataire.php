@@ -9,7 +9,7 @@ class Prestataire extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'role', 'name', 'email', 'password', 'id_categorie', 'isConfirmed', 'description'
+       'role', 'name', 'email', 'password', 'id_categorie', 'isConfirmed', 'image', 'description',
     ];
 
     public function category()
