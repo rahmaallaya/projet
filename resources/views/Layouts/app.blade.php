@@ -225,7 +225,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('services.corporate.list') }}">Corporate Services</a></li>
                             <li><a class="dropdown-item" href="{{ route('services.individual.list') }}">Individual Services</a></li>
-                            <li><a class="dropdown-item" href="#">AI Services</a></li>
+                            <li><a class="dropdown-item" href="{{ route('ai-services') }}">AI Services</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

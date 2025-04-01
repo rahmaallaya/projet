@@ -4,7 +4,7 @@ use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\AIServicesController;
 use App\Http\Controllers\ApprovalController;
 /*
 |--------------------------------------------------------------------------
@@ -54,3 +54,7 @@ Route::get('/requests',[ContactController::class, 'index'])->name('requests.list
 
 // Logout Route
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+Route::get('/ai-services', [AIServicesController::class, 'show'])->name('ai-services');
+Route::post('/ai-services/chat', [AIServicesController::class, 'chat'])->name('ai-services.chat');
