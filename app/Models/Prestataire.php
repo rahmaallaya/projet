@@ -16,4 +16,9 @@ class Prestataire extends Model
     {
         return $this->belongsTo(Category::class, 'id_categorie');
     }
+    
+public function prestataires()
+{
+    return $this->hasMany(Prestataire::class, 'id_categorie');
+}
 }

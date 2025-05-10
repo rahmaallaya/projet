@@ -6,6 +6,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AIServicesController;
 use App\Http\Controllers\ApprovalController;
+use App\Http\Controllers\RequestController;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,9 +33,11 @@ Route::post('/category', [CategoryController::class, 'store'])->name('category.s
 Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
-Route::get('/contact', [ContactController::class, 'create'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-Route::get('/requests',[ContactController::class, 'index'])->name('requests.list');
+Route::prefix('contact')->group(function () {
+    Route::get('/', [ContactController::class, 'create'])->name('contact.form');
+    Route::post('/', [ContactController::class, 'store'])->name('contact.submit');
+    Route::get('/list', [ContactController::class, 'index'])->name('contact.requests'); // Pour l'admin
+});
 
 
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
@@ -58,3 +62,26 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/ai-services', [AIServicesController::class, 'show'])->name('ai-services');
 Route::post('/ai-services/chat', [AIServicesController::class, 'chat'])->name('ai-services.chat');
+// routes/web.php
+
+Route::get('/categories/{category}/individual', [ServiceController::class, 'showIndividualPrestataires'])->name('categories.individual.prestataires');
+Route::get('/categories/{category}/corporate', [ServiceController::class, 'showCorporatePrestataires'])->name('categories.corporate.prestataires');
+
+
+// Edition de profil
+Route::middleware(['auth.session'])->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+// Demandes de service
+
+    Route::prefix('services')->group(function () {
+        Route::get('/my-requests', [RequestController::class, 'index'])->name('service.requests');
+        Route::post('/request/{prestataire}', [RequestController::class, 'store'])->name('requests.store');
+    });
+
+Route::get('/categories/{category}/prestataires', [ServiceController::class, 'showPrestataires'])
+     ->name('categories.prestataires');
+     

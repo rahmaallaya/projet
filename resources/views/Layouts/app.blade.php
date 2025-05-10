@@ -233,7 +233,7 @@
                     </li>
                     @if (session('type') === 'entreprise' || session('type') === 'individu')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('requests.list') }}">Request List</a>
+                            <a class="nav-link" href="{{ route('service.requests') }}">Request List</a>
                         </li>
                     @endif
                     @if (session('type') === 'super_admin')
@@ -241,7 +241,7 @@
                             <a class="nav-link" href="{{ route('approvals.index') }}">User Approvals</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('requests.list') }}">Information Requests</a>
+                            <a class="nav-link" href="{{ route('contact.requests') }}">Information Requests</a>
                         </li>
                     @endif
                 </ul>
@@ -272,9 +272,10 @@
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                         <i class="bi bi-pencil-square me-2"></i>Edit Profile
                                     </a>
+                                    
                                 </li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">

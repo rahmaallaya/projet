@@ -27,4 +27,17 @@ class ServiceController extends Controller
         $prestataires = Prestataire::where('id_categorie', $id)->where('isConfirmed', 'active')->get();
         return view('services.' . ($category->type === 'entreprise' ? 'corporate' : 'individual') . '.show', compact('category', 'prestataires'));
     }
+    // app/Http/Controllers/ServiceController.php
+
+public function showIndividualPrestataires(Category $category)
+{
+    $prestataires = $category->prestataires()->where('role', 'individu')->get();
+    return view('prestataires.list', compact('category', 'prestataires'));
+}
+
+public function showCorporatePrestataires(Category $category)
+{
+    $prestataires = $category->prestataires()->where('role', 'entreprise')->get();
+    return view('prestataires.list', compact('category', 'prestataires'));
+}
 }
