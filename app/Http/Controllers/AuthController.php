@@ -79,35 +79,45 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required'
         ]);
 
+        // Tentative de connexion utilisateur
         $user = User::where('email', $request->email)->first();
-        $prestataire = Prestataire::where('email', $request->email)->first();
-
         if ($user && Hash::check($request->password, $user->password)) {
-            Session::put('user_id', $user->id);
-            Session::put('type', 'user');
+            Session::put([
+                'user_id' => $user->id,
+                'user_type' => 'user',
+                'user_name' => $user->name,
+                'logged_in' => true
+            ]);
             return redirect()->route('home');
         }
 
+        // Tentative de connexion prestataire
+        $prestataire = Prestataire::where('email', $request->email)->first();
         if ($prestataire && Hash::check($request->password, $prestataire->password)) {
             if ($prestataire->isConfirmed === 'desactive') {
-                return back()->with('error', 'Votre compte n’a pas encore été approuvé par le super admin.');
+                return back()->withErrors(['compte' => 'Compte en attente de validation']);
             }
-
-            Session::put('prestataire_id', $prestataire->id);
-            Session::put('type', $prestataire->role);
+            
+            Session::put([
+                'user_id' => $prestataire->id,
+                'user_type' => $prestataire->role,
+                'user_name' => $prestataire->name,
+                'logged_in' => true
+            ]);
             return redirect()->route('home');
         }
 
-        return back()->withErrors(['email' => 'Identifiants incorrects']);
+        return back()->withErrors(['email' => 'Identifiants invalides']);
     }
 
-    // Déconnexion
-    public function logout()
+    public function logout(Request $request)
     {
         Session::flush();
-        return redirect()->route('home')->with('success', 'Vous êtes déconnecté.');
+        return redirect()->route('home');
     }
 }
+    
+   

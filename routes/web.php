@@ -80,6 +80,7 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
     Route::prefix('services')->group(function () {
         Route::get('/my-requests', [RequestController::class, 'index'])->name('service.requests');
         Route::post('/request/{prestataire}', [RequestController::class, 'store'])->name('requests.store');
+        
     });
 
 Route::get('/categories/{category}/prestataires', [ServiceController::class, 'showPrestataires'])

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('prestataires', function (Blueprint $table) {
             $table->id();
             $table->enum('role', ['super_admin', 'individu', 'entreprise']);
-            $table->string('name');
+            $table->string('name')->nullable(false);
             $table->string('email')->unique();
             $table->string('password');
             $table->unsignedBigInteger('id_categorie')->nullable();

@@ -12,6 +12,6 @@ class Category extends Model
 
     public function prestataires()
     {
-        return $this->hasMany(Prestataire::class, 'id_categorie');
+        return $this->hasMany(Prestataire::class, 'id_categorie')->whereNotNull('name');
     }
 }

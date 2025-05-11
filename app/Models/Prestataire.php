@@ -2,12 +2,20 @@
 
 namespace App\Models;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Prestataire extends Model
+
+class Prestataire  extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
+
+
+    protected $guard = 'prestataire';
+
     protected $fillable = [
        'role', 'name', 'email', 'password', 'id_categorie', 'isConfirmed', 'image', 'description',
     ];
@@ -20,5 +28,9 @@ class Prestataire extends Model
 public function prestataires()
 {
     return $this->hasMany(Prestataire::class, 'id_categorie');
+}
+public function serviceRequests()
+{
+    return $this->hasMany(ServiceRequest::class);
 }
 }

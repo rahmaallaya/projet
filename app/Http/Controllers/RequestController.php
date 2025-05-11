@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ServiceRequest;
 use App\Models\Prestataire;
-use Illuminate\Http\Request;
 
 class RequestController extends Controller
 {
@@ -29,26 +29,37 @@ class RequestController extends Controller
     }
 
 
-    public function store(Request $request, Prestataire $prestataire)
+    public function store(Request $request, $prestataireId)
 {
-    $request->validate([
-        'description' => 'required|string|min:10',
-        'ville' => 'required|string|max:255',
-        'gouvernorat' => 'required|string|max:255',
-        'telephone' => 'required|string|max:20'
+    if (!session('logged_in') || session('user_type') !== 'user') {
+        return redirect()->route('login.form')
+               ->with('error', 'Action non autorisée');
+    }
+
+    $validated = $request->validate([
+        'description' => 'required|string|min:10|max:1000',
+        'ville' => 'required|string|max:50',
+        'gouvernorat' => 'required|string|max:50',
+        'telephone' => 'required|digits:8' // Validation stricte
     ]);
 
-    ServiceRequest::create([
-        'user_id' => auth()->id(),
-        'prestataire_id' => $prestataire->id,
-        'description' => $request->description,
-        'ville' => $request->ville,
-        'gouvernorat' => $request->gouvernorat,
-        'telephone' => $request->telephone,
-        'status' => 'pending'
-    ]);
+    try {
+        ServiceRequest::create([
+            'user_id' => session('user_id'),
+            'prestataire_id' => $prestataireId,
+            'description' => strip_tags($validated['description']), // Sécurité
+            'ville' => $validated['ville'],
+            'gouvernorat' => $validated['gouvernorat'],
+            'telephone' => $validated['telephone'],
+            'status' => 'pending'
+        ]);
 
-    return redirect()->back()->with('success', 'Demande envoyée avec succès!');
+        return back()->with('success', 'Demande envoyée!');
+
+    } catch (\Exception $e) {
+        return back()->withInput()
+               ->with('error', "Erreur technique: ". $e->getMessage());
+    }
 }
     
     public function update(Request $request, ServiceRequest $serviceRequest)
