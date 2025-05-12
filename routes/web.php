@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
@@ -8,6 +9,8 @@ use App\Http\Controllers\AIServicesController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,21 +43,21 @@ Route::prefix('contact')->group(function () {
 });
 
 
-    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-    Route::get('/contact-requests', [ContactController::class, 'index'])->name('contact-requests.index');
-    Route::get('/contact-requests/{id}', [ContactController::class, 'show'])->name('contact-requests.show');
-    Route::post('/contact-requests/{id}/response', [ContactController::class, 'response'])->name('contact-requests.response');
-    Route::delete('/contact-requests/{id}', [ContactController::class, 'destroy'])->name('contact-requests.destroy');
+Route::get('/contact-requests', [ContactController::class, 'index'])->name('contact-requests.index');
+Route::get('/contact-requests/{id}', [ContactController::class, 'show'])->name('contact-requests.show');
+Route::post('/contact-requests/{id}/response', [ContactController::class, 'response'])->name('contact-requests.response');
+Route::delete('/contact-requests/{id}', [ContactController::class, 'destroy'])->name('contact-requests.destroy');
 // Approval Routes (Super Admin)
 
-    Route::get('/approvals', [ApprovalController::class, 'index'])->name('approvals.index');
-    Route::get('/approvals/{id}', [ApprovalController::class, 'show'])->name('approvals.show');
-    Route::post('/approvals/approve/{id}', [ApprovalController::class, 'approve'])->name('approvals.approve');
-   Route::post('/approvals/reject/{id}', [ApprovalController::class, 'reject'])->name('approvals.reject');
+Route::get('/approvals', [ApprovalController::class, 'index'])->name('approvals.index');
+Route::get('/approvals/{id}', [ApprovalController::class, 'show'])->name('approvals.show');
+Route::post('/approvals/approve/{id}', [ApprovalController::class, 'approve'])->name('approvals.approve');
+Route::post('/approvals/reject/{id}', [ApprovalController::class, 'reject'])->name('approvals.reject');
 
 // Logout Route
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -72,17 +75,25 @@ Route::get('/categories/{category}/corporate', [ServiceController::class, 'showC
 Route::middleware(['auth.session'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 // Demandes de service
 
-    Route::prefix('services')->group(function () {
-        Route::get('/my-requests', [RequestController::class, 'index'])->name('service.requests');
-        Route::post('/request/{prestataire}', [RequestController::class, 'store'])->name('requests.store');
-        
-    });
+Route::prefix('services')->group(function () {
+    Route::get('/my-requests', [RequestController::class, 'index'])->name('service.requests');
+    Route::post('/request/{prestataire}', [RequestController::class, 'store'])->name('requests.store');
+});
 
 Route::get('/categories/{category}/prestataires', [ServiceController::class, 'showPrestataires'])
-     ->name('categories.prestataires');
-     
+    ->name('categories.prestataires');
+
+Route::middleware(['auth.session'])->group(function () {
+    Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
+    Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{post}', [PostsController::class, 'show'])->name('posts.show');
+    Route::get('/posts/{post}/edit', [PostsController::class, 'edit'])->name('posts.edit');
+    Route::put('/posts/{post}', [PostsController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{post}', [PostsController::class, 'destroy'])->name('posts.destroy');
+});
