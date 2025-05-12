@@ -43,8 +43,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function serviceRequests()
-{
-    return $this->hasMany(ServiceRequest::class);
-}
+    {
+        return $this->hasMany(ServiceRequest::class);
+    }
+    public function post()
+    {
+        return $this->hasMany(Posts::class);
+    }
 
 }
