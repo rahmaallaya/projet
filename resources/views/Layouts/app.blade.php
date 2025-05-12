@@ -231,29 +231,29 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/contact">Contact</a>
                     </li>
-                    @if (session('type') === 'entreprise' || session('type') === 'individu')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('service.requests') }}">Request List</a>
-                        </li>
-                    @endif
-                    @if (session('type') === 'super_admin')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('approvals.index') }}">User Approvals</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contact.requests') }}">Information Requests</a>
-                        </li>
-                    @endif
+                    @if (session('user_type') === 'prestataire' && (session('prestataire_role') === 'entreprise' || session('prestataire_role') === 'individu'))
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('service.requests') }}">Request List</a>
+    </li>
+@endif
+@if (session('user_type') === 'prestataire' && session('prestataire_role') === 'super_admin')
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('approvals.index') }}">User Approvals</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('contact.requests') }}">Information Requests</a>
+    </li>
+@endif
                 </ul>
                 <ul class="navbar-nav ms-auto">
-                    @if (session('user_id') || session('prestataire_id'))
+                    @if (session('logged_in'))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" 
                                data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle me-2"></i>
-                                @if (session('user_id'))
+                                @if (session('user_type') === 'user')
                                     {{ App\Models\User::find(session('user_id'))->name ?? 'User' }}
-                                @elseif (session('prestataire_id'))
+                                @elseif (session('user_type') === 'prestataire')
                                     {{ App\Models\Prestataire::find(session('prestataire_id'))->name ?? 'Prestataire' }}
                                 @endif
                             </a>
@@ -262,20 +262,19 @@
                                     <span class="dropdown-item-text small">
                                         Logged in as<br>
                                         <strong>
-                                            @if (session('user_id'))
-                                                {{ App\Models\User::find(session('user_id'))->email ?? 'Email not found' }}
-                                            @elseif (session('prestataire_id'))
-                                                {{ App\Models\Prestataire::find(session('prestataire_id'))->email ?? 'Email not found' }}
+                                            @if (session('user_type') === 'user')
+                                                {{ App\Models\User::find(session('user_id'))->name ?? 'User' }}
+                                            @else
+                                                {{ App\Models\Prestataire::find(session('prestataire_id'))->name ?? 'Prestataire' }}
                                             @endif
                                         </strong>
                                     </span>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                         <i class="bi bi-pencil-square me-2"></i>Edit Profile
                                     </a>
-                                    
                                 </li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">

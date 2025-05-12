@@ -71,7 +71,7 @@ Route::get('/categories/{category}/corporate', [ServiceController::class, 'showC
 // Edition de profil
 Route::middleware(['auth.session'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-
+    Route::get('/profile', 'ProfileController@show');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 

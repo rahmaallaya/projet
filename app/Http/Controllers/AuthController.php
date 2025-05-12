@@ -74,50 +74,56 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Gérer la connexion
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+    //Gérer la connexion
+public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
+
+    // Tentative de connexion UTILISATEUR
+    $user = User::where('email', $request->email)->first();
+    if ($user && Hash::check($request->password, $user->password)) {
+        Session::put([
+            'user_id' => $user->id,
+            'user_type' => 'user', // Type clairement différencié
+            'user_name' => $user->name,
+            'logged_in' => true
         ]);
-
-        // Tentative de connexion utilisateur
-        $user = User::where('email', $request->email)->first();
-        if ($user && Hash::check($request->password, $user->password)) {
-            Session::put([
-                'user_id' => $user->id,
-                'user_type' => 'user',
-                'user_name' => $user->name,
-                'logged_in' => true
-            ]);
-            return redirect()->route('home');
-        }
-
-        // Tentative de connexion prestataire
-        $prestataire = Prestataire::where('email', $request->email)->first();
-        if ($prestataire && Hash::check($request->password, $prestataire->password)) {
-            if ($prestataire->isConfirmed === 'desactive') {
-                return back()->withErrors(['compte' => 'Compte en attente de validation']);
-            }
-            
-            Session::put([
-                'user_id' => $prestataire->id,
-                'user_type' => $prestataire->role,
-                'user_name' => $prestataire->name,
-                'logged_in' => true
-            ]);
-            return redirect()->route('home');
-        }
-
-        return back()->withErrors(['email' => 'Identifiants invalides']);
-    }
-
-    public function logout(Request $request)
-    {
-        Session::flush();
         return redirect()->route('home');
     }
+
+    // Tentative de connexion PRESTATAIRE
+    $prestataire = Prestataire::where('email', $request->email)->first();
+    if ($prestataire && Hash::check($request->password, $prestataire->password)) {
+        if ($prestataire->isConfirmed === 'desactive') {
+            return back()->withErrors(['compte' => 'Compte en attente de validation']);
+        }
+
+        Session::put([
+            'prestataire_id' => $prestataire->id, // Clé distincte pour Prestataire
+            'prestataire_role' => $prestataire->role,
+            'user_type' => 'prestataire', // Type clairement différencié
+            'user_name' => $prestataire->name,
+            'logged_in' => true
+        ]);
+        return redirect()->route('home');
+    }
+
+    return back()->withErrors(['email' => 'Identifiants invalides']);
+}
+
+public function logout(Request $request)
+{
+    // Supprimer toutes les clés de session spécifiques
+    Session::forget(['user_id', 'prestataire_id', 'user_type', 'user_name', 'logged_in']);
+    
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    
+    return redirect()->route('home');
+}
 }
     
    
