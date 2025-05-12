@@ -9,16 +9,21 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 
-class Prestataire  extends Authenticatable
+class Prestataire extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    use HasFactory, Notifiable;
 
     protected $guard = 'prestataire';
 
     protected $fillable = [
-       'role', 'name', 'email', 'password', 'id_categorie', 'isConfirmed', 'image', 'description',
+        'role', 'name', 'email', 'password', 
+        'id_categorie', 'isConfirmed', 'image', 'description'
     ];
+
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
 
     public function category()
     {
